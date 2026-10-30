@@ -1,0 +1,20 @@
+[
+    {
+        "protocol": "Classical Baseline (X25519 + Ed25519)",
+        "total_payload_bytes": 128,
+        "tcp_segments_required": 1,
+        "simulated_extra_handshake_delay_ms": 0.0
+    },
+    {
+        "protocol": "Hybrid Mode (X25519 + ML-KEM-768)",
+        "total_payload_bytes": 2304,
+        "tcp_segments_required": 2,
+        "simulated_extra_handshake_delay_ms": 15.0
+    },
+    {
+        "protocol": "Pure PQC (ML-KEM-1024 + ML-DSA-65)",
+        "total_payload_bytes": 8397,
+        "tcp_segments_required": 6,
+        "simulated_extra_handshake_delay_ms": 75.0
+    }
+]
