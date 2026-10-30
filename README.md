@@ -1,19 +1,24 @@
 # Post-Quantum Cryptography (PQC) Web Authentication Benchmark
 
-I am building this repository to evaluate and document the protocol-level performance overhead of migrating web authentication workflows from classical cryptography to NIST-standardized Post-Quantum Cryptography (PQC). 
+I am building this repository to evaluate and document the protocol-level performance overhead of migrating web authentication workflows from classical cryptography to NIST-standardized Post-Quantum Cryptography (PQC).
 
 ## Project Motivation & Objectives
 
-As quantum computing threatens traditional public-key infrastructure (such as ECC and RSA), transitioning web standards to post-quantum algorithms introduces significant trade-offs—particularly regarding larger public key dimensions, ciphertext sizes, and packet fragmentation over network layers. 
+As quantum computing threatens traditional public-key infrastructure (such as ECC and RSA), transitioning web standards to post-quantum algorithms introduces significant trade-offs—particularly regarding larger public key dimensions, ciphertext sizes, and packet fragmentation over network layers.
 
 Through this project, I am establishing a rigorous benchmarking pipeline to:
 * **Quantify Performance Trade-offs:** Measure execution latencies, public key sizes, and payload overheads comparing classical primitives (X25519/Ed25519) against NIST standards (ML-KEM and ML-DSA).
+* **Simulate Network Overhead:** Evaluate TCP packet fragmentation dynamics and handshake latency penalties during WebAuthn and TLS 1.3 key exchanges when transmitting high-byte PQC primitives over standard network MTUs.
 * **Document Technical Competency:** Provide reproducible, protocol-level telemetry data and automated evaluation scripts to study PQC integration challenges for secure web applications.
 
-## Algorithms Evaluated
+## Algorithms & Workflows Evaluated
 
 * **Key Encapsulation Mechanisms (KEM):** X25519 (Classical) vs. ML-KEM-512 / ML-KEM-768 / ML-KEM-1024 (NIST Standards)
 * **Digital Signatures (SIG):** Ed25519 (Classical) vs. ML-DSA-65 (NIST Standard)
+* **Network Handshake Modes:**
+  * *Classical Baseline:* X25519 + Ed25519
+  * *Hybrid Migration Mode:* X25519 + ML-KEM-768
+  * *Pure Post-Quantum Mode:* ML-KEM-1024 + ML-DSA-65
 
 ## Repository Structure
 
@@ -21,8 +26,11 @@ Through this project, I am establishing a rigorous benchmarking pipeline to:
 pqc-web-auth-benchmark/
 ├── data/
 │   └── processed/
-│       └── protocol_benchmarks.json  # Raw telemetry data from benchmark runs
+│       ├── protocol_benchmarks.json       # Raw telemetry data from algorithm benchmarks
+│       └── fragmentation_simulation.json  # Network fragmentation telemetry
 ├── results/
-│   └── plots/                      # Visualization outputs
+│   └── plots/                             # Visualization outputs
 └── scripts/
-    └── run_benchmarks.py           # Phase 1 protocol benchmark execution script
+    ├── run_benchmarks.py                  # Phase 1 protocol benchmark execution script
+    ├── plot_results.py                    # Phase 2 visualization generation script
+    └── simulate_fragmentation.py          # Phase 3 TCP packet fragmentation simulator
